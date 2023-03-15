@@ -11,7 +11,7 @@ resource "google_compute_firewall" "rules" {
   count = var.google_compute_firewall_enabled && var.module_enabled ? 1 : 0
 
   project     = var.project_id
-  name        = module.labels.name
+  name        = module.labels.id
   network     = var.network
   description = var.description
 
