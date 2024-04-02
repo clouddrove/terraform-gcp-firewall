@@ -23,6 +23,23 @@ module "vpc" {
 }
 
 # ------------------------------------------------------------------------------
+# local_values_for_ports
+# ------------------------------------------------------------------------------
+
+locals {
+  allowed_traffic = [
+    {
+      protocol = "tcp"
+      ports    = ["80", "443"]
+    },
+    {
+      protocol = "icmp"
+      ports    = []
+    }
+  ]
+}
+
+# ------------------------------------------------------------------------------
 # Module_for_firewall
 # ------------------------------------------------------------------------------
 
@@ -43,15 +60,6 @@ module "firewall" {
   enable_target_service_accounts  = false # or true
   target_service_accounts         = ["example@example.iam.gserviceaccount.com"]
   priority                        = 1000
+  allowed_traffic                 = local.allowed_traffic
 
-  allowed_traffic = [
-    {
-      protocol = "tcp"
-      ports    = ["80", "443"]
-    },
-    {
-      protocol = "icmp"
-      ports    = []
-    }
-  ]
 }
