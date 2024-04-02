@@ -1,3 +1,7 @@
+# ------------------------------------------------------------------------------
+# Outputs
+# ------------------------------------------------------------------------------
+
 output "self_link" {
   value       = join("", google_compute_firewall.rules.*.self_link)
   description = "The URI of the created resource."

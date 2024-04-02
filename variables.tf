@@ -1,3 +1,7 @@
+# ------------------------------------------------------------------------------
+# Variables
+# ------------------------------------------------------------------------------
+
 variable "environment" {
   type        = string
   default     = ""
@@ -7,23 +11,25 @@ variable "environment" {
 variable "label_order" {
   type        = list(any)
   default     = []
-  description = "Label order, e.g. sequence of application name and environment `name`,`environment`,'attribute' [`webserver`,`qa`,`devops`,`public`,] ."
+  description = "Label order, e.g. sequence of application name and environment `name`,`environment`,'attribute' [`webserver`,`qa`,`devops`,`public`,]."
 }
 
 variable "name" {
   type        = string
   default     = ""
-  description = "Name of the resource. Provided by the client when the resource is created. "
+  description = "Name of the resource. Provided by the client when the resource is created."
 }
 
 variable "google_compute_firewall_enabled" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Flag to enable or disable the creation of Google Compute Engine firewall rules. Set to true to enable creation, false to disable."
 }
 
 variable "module_enabled" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Flag to enable or disable the entire module. Set to true to enable the module, false to disable."
 }
 
 variable "protocol" {
@@ -57,18 +63,56 @@ variable "allow" {
 }
 
 variable "ports" {
-  type    = list(number)
-  default = []
-}
-
-variable "source_tags" {
-  type        = list(string)
+  type        = list(number)
   default     = []
-  description = "Nomes de tags que serão utilizadas para utilizar com esta regra de firewall"
+  description = "List of port numbers to allow traffic for. Example: [80, 443, 8080]"
 }
 
 variable "source_ranges" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
-  description = "IP que será liberado para acessar"
+  description = "List of IP ranges to allow access from. By default, allows access from any IP address (0.0.0.0/0)."
+}
+
+variable "direction" {
+  description = "The direction of traffic flow (INGRESS or EGRESS)"
+  type        = string
+  default     = "INGRESS"
+}
+
+variable "disabled" {
+  description = "Whether the firewall rule is disabled (true/false)"
+  type        = bool
+  default     = false
+}
+
+variable "destination_ranges" {
+  description = "List of destination IP ranges"
+  type        = list(string)
+  default     = []
+}
+
+variable "source_service_accounts" {
+  description = "List of source service accounts for filtering traffic"
+  type        = list(string)
+  default     = []
+}
+
+variable "target_service_accounts" {
+  description = "List of target service accounts for filtering traffic, If we don't specify this, it will automatically include all instances in the network."
+  type        = list(string)
+  default     = []
+}
+
+variable "priority" {
+  description = "Priority for the firewall rule"
+  type        = number
+  default     = 65535
+
+}
+
+variable "enable_target_service_accounts" {
+  description = "Flag to enable or disable the use of target service accounts."
+  type        = bool
+  default     = false
 }
