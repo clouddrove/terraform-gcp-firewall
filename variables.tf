@@ -32,12 +32,6 @@ variable "module_enabled" {
   description = "Flag to enable or disable the entire module. Set to true to enable the module, false to disable."
 }
 
-variable "protocol" {
-  type        = string
-  default     = ""
-  description = "The IP protocol to which this rule applies. The protocol type is required when creating a firewall rule."
-}
-
 variable "project_id" {
   type        = string
   default     = ""
@@ -56,16 +50,12 @@ variable "network" {
   description = "The name or self_link of the network to attach this firewall to."
 }
 
-variable "allow" {
-  type        = list(any)
-  default     = []
-  description = "(Optional) The list of ALLOW rules specified by this firewall. Each rule specifies a protocol and port-range tuple that describes a permitted connection."
-}
-
-variable "ports" {
-  type        = list(number)
-  default     = []
-  description = "List of port numbers to allow traffic for. Example: [80, 443, 8080]"
+variable "allowed_traffic" {
+  description = "List of allowed traffic configurations"
+  type = list(object({
+    protocol = string
+    ports    = list(string)
+  }))
 }
 
 variable "source_ranges" {

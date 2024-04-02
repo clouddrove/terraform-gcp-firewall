@@ -24,9 +24,12 @@ resource "google_compute_firewall" "rules" {
   priority                = var.priority
   disabled                = var.disabled
 
-  allow {
-    protocol = var.protocol
-    ports    = var.ports
+  dynamic "allow" {
+    for_each = var.allowed_traffic
+    content {
+      protocol = allow.value.protocol
+      ports    = allow.value.ports
+    }
   }
 }
 
