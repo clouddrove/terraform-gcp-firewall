@@ -2,18 +2,6 @@
 # Variables
 # ------------------------------------------------------------------------------
 
-variable "environment" {
-  type        = string
-  default     = "service-account"
-  description = "Environment name"
-}
-
-variable "label_order" {
-  type        = list(any)
-  default     = ["name", "environment"]
-  description = "Label order, e.g. `name`,`application`."
-}
-
 variable "gcp_project_id" {
   type        = string
   default     = "clouddrove"

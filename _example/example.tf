@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 
 provider "google" {
-  project = "cloud-crew-testing"
+  project = var.gcp_project_id
   region  = var.gcp_region
   zone    = var.gcp_zone
 }
@@ -35,14 +35,23 @@ module "firewall" {
   project_id                      = "clouddrove-1"
   network                         = module.vpc.vpc_id
   description                     = "Creates firewall rule targeting tagged instances."
-  protocol                        = "TCP"
-  ports                           = ["80", "4440", "443", "22"]
   source_ranges                   = ["0.0.0.0/0"]
-  direction                       = "INGRESS"
-  disabled                        = "false"
+  direction                       = "INGRESS" # or "EGRESS"
+  disabled                        = "false"   # or true
   destination_ranges              = ["10.0.0.0/24", "192.168.0.0/16"]
   source_service_accounts         = ["example@example.iam.gserviceaccount.com"]
-  enable_target_service_accounts  = false
+  enable_target_service_accounts  = false # or true
   target_service_accounts         = ["example@example.iam.gserviceaccount.com"]
   priority                        = 1000
+
+  allowed_traffic = [
+    {
+      protocol = "tcp"
+      ports    = ["80", "443"]
+    },
+    {
+      protocol = "icmp"
+      ports    = []
+    }
+  ]
 }
