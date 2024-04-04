@@ -15,25 +15,40 @@ github_repo: clouddrove/terraform-gcp-firewall
 
 # Badges to display
 badges:
-  - name: "Terraform"
-    image: "https://img.shields.io/badge/Terraform-v1.1.7-green"
-    url: "https://www.terraform.io"
-  - name: "Licence"
-    image: "https://img.shields.io/badge/License-APACHE-blue.svg"
-    url: "LICENSE.md"
+  - name: "Latest Release"
+    image: "https://img.shields.io/github/release/clouddrove/terraform-gcp-firewall.svg"
+    url: "https://github.com/clouddrove/terraform-gcp-firewall/releases/latest"
   - name: "tfsec"
     image: "https://github.com/clouddrove/terraform-gcp-firewall/actions/workflows/tfsec.yml/badge.svg"
     url: "https://github.com/clouddrove/terraform-gcp-firewall/actions/workflows/tfsec.yml"
-  - name: "static-checks"
-    image: "https://github.com/clouddrove/terraform-gcp-firewall/actions/workflows/terraform.yml/badge.svg"
-    url: "https://github.com/clouddrove/terraform-gcp-firewall/actions/workflows/terraform.yml"
+  - name: "Licence"
+    image: "https://img.shields.io/badge/License-APACHE-blue.svg"
+    url: "LICENSE.md"
+  - name: "Changelog"
+    image: "https://img.shields.io/badge/Changelog-blue"
+    url: "CHANGELOG.md"
+
+prerequesties:
+  - name: Terraform
+    url: https://learn.hashicorp.com/terraform/getting-started/install.html
+    version: ">= 1.7.0"
+    
+providers:
+  - name: gcp
+    url: https://cloud.google.com/
+    version: ">= 5.22.0"
+
+module_dependencies:
+  - name: Labels Module
+    url: https://github.com/clouddrove/terraform-gcp-labels
+    description: Provides resource tagging.
 
 #  description of this project
 description: |-
   This terraform module is used to create firewall on GCP.
 # extra content
 include:
-  - "terraform.md"
+  - "docs/io.md"
 
 # How to use this project
 # How to use this project
@@ -42,19 +57,22 @@ usage: |-
   ### Default subnet
   ```hcl
   module "firewall" {
-
-  source = "clouddrove/firewall/google"
-  version     = "1.0.0"
+  source = "../"
 
   name                            = "test-firewall"
   module_enabled                  = true
   google_compute_firewall_enabled = true
-  project_id                      = var.gcp_project_id
+  project_id                      = "clouddrove-1"
   network                         = module.vpc.vpc_id
   description                     = "Creates firewall rule targeting tagged instances."
-  protocol                        = "TCP"
-  ports                           = ["80", "4440", "443", "22"]
   source_ranges                   = ["0.0.0.0/0"]
-
+  direction                       = "INGRESS" # or "EGRESS"
+  disabled                        = "false"   # or true
+  destination_ranges              = ["10.0.0.0/24", "192.168.0.0/16"]
+  source_service_accounts         = ["example@example.iam.gserviceaccount.com"]
+  enable_target_service_accounts  = false # or true
+  target_service_accounts         = ["example@example.iam.gserviceaccount.com"]
+  priority                        = 1000
+  allowed_traffic                 = local.allowed_traffic
   }
-  ```
+```
