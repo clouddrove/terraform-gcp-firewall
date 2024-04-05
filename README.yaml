@@ -5,7 +5,7 @@
 #
 
 # Name of this project
-name : Terraform gcp firewall
+name : Terraform GCP Firewall
 
 # License of this project
 license: "APACHE"
@@ -47,8 +47,6 @@ module_dependencies:
 description: |-
   This terraform module is used to create firewall on GCP.
 # extra content
-include:
-  - "docs/io.md"
 
 # How to use this project
 usage: |-
