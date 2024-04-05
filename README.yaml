@@ -46,7 +46,6 @@ module_dependencies:
 #  description of this project
 description: |-
   This terraform module is used to create firewall on GCP.
-# extra content
 
 # How to use this project
 usage: |-
